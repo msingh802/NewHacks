@@ -1,6 +1,5 @@
 "use client"  
 import { Button } from "@/components/ui/button";
-import Image from "next/image";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
 
@@ -76,7 +75,7 @@ const quizQuestions = [
 
 
 export default function Questions() {
-  const [idxCurrentQuestion, setIdxCurrentQuestion] = useState(0);
+  const [idxCurrentQuestion, setIdxCurrentQuestion] = useState(8);
   const [msg, setMsg] = useState("");
   const [msg2, setMsg2] = useState("");
   const router = useRouter();
@@ -93,6 +92,7 @@ export default function Questions() {
 
   }
 
+
   return (
     <div className="flex items-center flex-col justify-center h-screen">
       <p>Question:</p>
@@ -108,9 +108,14 @@ export default function Questions() {
       </div>
       <p>{msg}</p>
       {msg2 && <Button onClick={() => { 
-        setIdxCurrentQuestion(idxCurrentQuestion + 1); 
-        setMsg2("");
-        setMsg("");
+        if(idxCurrentQuestion >= quizQuestions.length - 1) {
+          router.push("/end")
+        }
+        else {
+          setIdxCurrentQuestion(idxCurrentQuestion + 1); 
+          setMsg2("");
+          setMsg("");
+        }
       }}>{msg2}</Button>}
       
       <Button onClick={() => setIdxCurrentQuestion(0)}>Restart</Button>
