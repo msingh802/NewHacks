@@ -53,18 +53,21 @@ const quizQuestions = [
   ];
 
 export default function Questions() {
-    const [idxCurrentQuestion, setIdxCurrentQuestion] = useState(8);
+    const [idxCurrentQuestion, setIdxCurrentQuestion] = useState(0);
     const [msg, setMsg] = useState("");
     const [msg2, setMsg2] = useState("");
     const router = useRouter();
+    const [score, setScore] = useState(0);
 
     function compare(value) {
         console.log(value);
         if (value === quizQuestions[idxCurrentQuestion].answer) {
             setMsg("Correct!");
             setMsg2("Next Question");
+            setScore(score + 1);
         } else {
             setMsg("Incorrect!");
+            setScore(score - 1);
         }
     }
 
@@ -83,11 +86,13 @@ export default function Questions() {
                 })}
             </div>
             <p>{msg}</p>
+            <p>score : {score}</p>
             {msg2 && (
                 <Button
                     onClick={() => {
                         if (idxCurrentQuestion >= quizQuestions.length - 1) {
-                            router.push("/end");
+                            router.push("/end")
+                            setScore(0);
                         } else {
                             setIdxCurrentQuestion(idxCurrentQuestion + 1);
                             setMsg2("");
@@ -98,13 +103,19 @@ export default function Questions() {
                     {msg2}
                 </Button>
             )}
-            <Button onClick={() => setIdxCurrentQuestion(0)}>Restart</Button>
+            <Button onClick={() => { 
+                if(true){
+                    setIdxCurrentQuestion(0)
+                    setScore(0)}}}>Restart</Button>
             <Button
                 onClick={() => {
                     if (idxCurrentQuestion > 0) {
                         setIdxCurrentQuestion(idxCurrentQuestion - 1);
+                        setScore(score -1);
                     }
+                    else{
                     router.push("/");
+                    setScore(0);}
                 }}
             >
                 Back
